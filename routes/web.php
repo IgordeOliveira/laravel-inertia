@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\CustomerController;
 use App\Models\Customer;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 /*
@@ -17,13 +19,25 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'customers' => Customer::all()
-    ]);
+    return Redirect::route('login');
+
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+
+
+Route::middleware(['auth', 'verified'])->group(function () {
+
+    Route::get('/dashboard', function () {
+        return Inertia::render('Dashboard', [
+            'customers' => Customer::all()
+        ]);
+    })->name('dashboard');
+
+    Route::get('/customer/create', [CustomerController::class, 'create'])->name('customer.create');
+
+    Route::post('/customer/create', [CustomerController::class, 'store']);
+
+});
+
 
 require __DIR__.'/auth.php';

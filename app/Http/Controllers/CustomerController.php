@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
 use App\Models\Customer;
+use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
 
 class CustomerController extends Controller
 {
@@ -25,7 +27,7 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Customer/Create');
     }
 
     /**
@@ -36,7 +38,13 @@ class CustomerController extends Controller
      */
     public function store(StoreCustomerRequest $request)
     {
-        //
+        Customer::create(array_merge($request->validated(),[
+            'status' => 'new',
+            'user_id' => Auth::user()->id
+        ]));
+
+        return redirect()->route('dashboard', ['msg' => 'Customer created']);
+
     }
 
     /**
