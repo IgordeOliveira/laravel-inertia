@@ -37,14 +37,22 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/customer/new', [CustomerController::class, 'create'])->name('customer.create');
     Route::post('/customer/new', [CustomerController::class, 'store']);
+    Route::delete('/customer/{customerId}', [CustomerController::class, 'destroy'])->name('customer.delete');
 
-    Route::get('/numbers/{customerId}', [NumberController::class, 'index'])->name('numbers.list');
-    Route::get('/numbers/{customerId}/new', [NumberController::class, 'create'])->name('numbers.create');
-    Route::post('/numbers/{customerId}/new', [NumberController::class, 'store'])->name('numbers.create');
 
-    Route::get('/number/{numberId}/preferences', [NumberPreferenceController::class, 'index'])->name('preferences.list');
-    Route::get('/number/{numberId}/preferences/new', [NumberPreferenceController::class, 'create'])->name('preferences.create');
-    Route::post('/number/{numberId}/preferences/new', [NumberPreferenceController::class, 'store'])->name('preferences.create');
+    Route::group(['prefix' => 'numbers'], function() {
+        Route::get('/{customerId}', [NumberController::class, 'index'])->name('numbers.list');
+        Route::get('/{customerId}/new', [NumberController::class, 'create'])->name('numbers.create');
+        Route::post('/{customerId}/new', [NumberController::class, 'store'])->name('numbers.create');
+        Route::delete('/{numberId}', [NumberController::class, 'destroy'])->name('numbers.delete');
+    });
+
+    Route::group(['prefix' => 'preferences'], function() {
+        Route::get('/{numberId}', [NumberPreferenceController::class, 'index'])->name('preferences.list');
+        Route::get('/{numberId}/new', [NumberPreferenceController::class, 'create'])->name('preferences.new');
+        Route::post('/{numberId}/create', [NumberPreferenceController::class, 'store'])->name('preferences.create');
+        Route::delete('/{preferenceId}', [NumberPreferenceController::class, 'destroy'])->name('preferences.delete');
+    });
 
 });
 

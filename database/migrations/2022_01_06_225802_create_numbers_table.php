@@ -16,7 +16,7 @@ class CreateNumbersTable extends Migration
     {
         Schema::create('numbers', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Customer::class)->constrained();
+            $table->foreignIdFor(Customer::class)->constrained()->onDelete('cascade');
             $table->string('number',14);
             $table->enum('status', ['active', 'inactive', 'cancelled'])->default('active');
             $table->softDeletes();

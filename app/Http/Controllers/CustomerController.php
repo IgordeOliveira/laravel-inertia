@@ -87,8 +87,11 @@ class CustomerController extends Controller
      * @param  \App\Models\Customer  $customer
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Customer $customer)
+    public function destroy($customerId)
     {
-        //
+        Customer::find($customerId)->delete();
+
+        return redirect()->route('dashboard');
+
     }
 }

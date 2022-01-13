@@ -97,6 +97,9 @@
                         <th scope="col" class="relative px-6 py-3">
                           <span class="sr-only">Edit</span>
                         </th>
+                        <th scope="col" class="relative px-6 py-3">
+                          <span class="sr-only">Delete</span>
+                        </th>
                       </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
@@ -128,7 +131,7 @@
                           "
                         >
                           <Link
-                            :href="route('customer.create')"
+                            :href="route('preferences.list',[number.id])"
                             class="
                               text-white
                               bg-blue-700
@@ -143,6 +146,15 @@
                             "
                             >Manager Preferences</Link
                           >
+                        </td>
+                        <td
+                          class="
+                            whitespace-nowrap
+                            text-right text-sm
+                            font-medium
+                          "
+                        >
+                            <DeleteButton @click="deleteNumbers(number.id)" />
                         </td>
                       </tr>
                     </tbody>
@@ -163,6 +175,8 @@ import StatusBadge from "@/Components/StatusBadge.vue";
 import Alert from "@/Components/Alert.vue";
 import { Head, Link } from "@inertiajs/inertia-vue3";
 import dayjs from "dayjs";
+import DeleteButton from "@/Components/DeleteButton.vue";
+import { Inertia } from '@inertiajs/inertia';
 
 export default {
   components: {
@@ -170,7 +184,8 @@ export default {
     Head,
     Link,
     StatusBadge,
-    Alert
+    Alert,
+    DeleteButton
   },
   props: {
     customer: Object,
@@ -181,6 +196,11 @@ export default {
       const date = dayjs(dateString);
       return date.format("MM/DD/YYYY");
     },
+    deleteNumbers(numberId){
+        Inertia.delete(numberId, {
+            only: ['numbers'],
+        })
+    }
   },
 };
 </script>

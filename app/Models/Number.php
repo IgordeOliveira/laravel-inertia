@@ -25,7 +25,11 @@ class Number extends Model
 
 
     function customer() {
-        return $this->belongsTo('Customer', 'id');
+        return $this->belongsTo(Customer::class);
+    }
+
+    function preferences() {
+        return $this->hasMany(NumberPreference::class);
     }
 
 }

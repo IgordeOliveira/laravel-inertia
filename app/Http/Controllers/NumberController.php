@@ -108,8 +108,16 @@ class NumberController extends Controller
      * @param  \App\Models\Number  $number
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Number $number)
+    public function destroy($numberId)
     {
-        //
+        $number = Number::find($numberId);
+        $customerId = $number->customer->id;
+
+
+        // foreach ($number->preferences() as $preference){
+        //     $preference->delete();
+        // };
+        $number->delete();
+        return redirect()->route('numbers.list',[$customerId]);
     }
 }

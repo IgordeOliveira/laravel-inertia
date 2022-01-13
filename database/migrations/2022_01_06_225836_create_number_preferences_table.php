@@ -16,7 +16,7 @@ class CreateNumberPreferencesTable extends Migration
     {
         Schema::create('number_preferences', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Number::class)->constrained();
+            $table->foreignIdFor(Number::class)->constrained()->onDelete('cascade');
             $table->string('name')->nullable(false);
             $table->string('value')->nullable(false);
             $table->softDeletes();
