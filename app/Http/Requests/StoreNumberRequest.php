@@ -13,7 +13,7 @@ class StoreNumberRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,8 @@ class StoreNumberRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'number' => ['required', 'max:14', 'min:8'],
+            'status' => ['required'],
         ];
     }
 }

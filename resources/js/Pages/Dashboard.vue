@@ -13,6 +13,7 @@
                 <div class="mb-5">
                     <Link :href="route('customer.create')" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center">Create new customer</Link>
                 </div>
+                <Alert :msg="route()?.params.msg"/>
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="flex flex-col">
                         <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -103,7 +104,7 @@
                                         font-medium
                                         "
                                     >
-                                        <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center">Add Number</button>
+                                        <Link :href="route('numbers.list',[customer.id])" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center">Manager numbers</Link>
                                     </td>
                                     </tr>
                                 </tbody>
@@ -121,6 +122,7 @@
 <script>
 import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue'
 import StatusBadge from '@/Components/StatusBadge.vue'
+import Alert from '@/Components/Alert.vue'
 import { Head, Link } from '@inertiajs/inertia-vue3';
 
 export default {
@@ -128,7 +130,8 @@ export default {
         BreezeAuthenticatedLayout,
         Head,
         Link,
-        StatusBadge
+        StatusBadge,
+        Alert
     },
     props: {
         customers: Array,

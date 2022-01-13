@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreNumberRequest;
 use App\Http\Requests\UpdateNumberRequest;
 use App\Models\Number;
+use App\Models\Customer;
+use App\Models\NumberPreference;
+use Inertia\Inertia;
 
 class NumberController extends Controller
 {
@@ -13,9 +16,12 @@ class NumberController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($customerId)
     {
-        //
+        $customer = Customer::find($customerId);
+        $numbers = $customer->numbers;
+
+        return Inertia::render('Numbers/List', ['numbers' => $numbers, 'customer' => $customer]);
     }
 
     /**
@@ -23,9 +29,11 @@ class NumberController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($customerId)
     {
-        //
+        $customer = Customer::find($customerId);
+
+        return Inertia::render('Numbers/Create', ['customer' => $customer]);
     }
 
     /**
@@ -36,7 +44,29 @@ class NumberController extends Controller
      */
     public function store(StoreNumberRequest $request)
     {
-        //
+        $customerId = $request->customerId;
+        $number = Number::create(array_merge($request->validated(), [
+            'customer_id' => $customerId
+        ]));
+
+
+        NumberPreference::insert([
+            [
+                'number_id' => $number->id,
+                'name' => 'auto_attendant',
+                'value' => '1',
+            ],
+            [
+                'number_id' => $number->id,
+                'name' => 'voicemail_enabled',
+                'value' => '1',
+            ]
+        ]);
+
+
+
+
+        return redirect()->route('numbers.list', ['customerId' => $customerId, 'msg' => 'Number created']);
     }
 
     /**
@@ -47,7 +77,6 @@ class NumberController extends Controller
      */
     public function show(Number $number)
     {
-        //
     }
 
     /**

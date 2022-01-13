@@ -4,46 +4,23 @@
   <BreezeAuthenticatedLayout>
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-        Create Customer
+        Create number for {{customer.name}}
       </h2>
     </template>
     <div class="py-11">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <form @submit.prevent="form.post(route('customer.create'))">
+        <form @submit.prevent="form.post(route('numbers.create',[customer.id]))">
+          <input type="hidden" v-model="form.customerId" />
           <div class="mb-6">
             <label
-              for="name"
+              for="number"
               class="block mb-2 text-sm font-medium text-gray-800"
-              >Name</label
-            >
-            <input
-              type="text"
-              id="name"
-              v-model="form.name"
-              class="
-                bg-gray-50
-                border border-gray-300
-                text-gray-900 text-sm
-                rounded-lg
-                focus:ring-blue-500 focus:border-blue-500
-                block
-                w-full
-                p-2.5
-              "
-              required
-            />
-            <p v-if="form.errors.name" class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Oops!</span>{{ form.errors.name }}</p>
-          </div>
-          <div class="mb-6">
-            <label
-              for="document"
-              class="block mb-2 text-sm font-medium text-gray-900"
-              >Document</label
+              >Number</label
             >
             <input
               type="number"
-              id="document"
-              v-model="form.document"
+              id="number"
+              v-model="form.number"
               class="
                 bg-gray-50
                 border border-gray-300
@@ -56,7 +33,49 @@
               "
               required
             />
-            <p v-if="form.errors.document" class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Oops!</span>{{ form.errors.document }}</p>
+            <p
+              v-if="form.errors.number"
+              class="mt-2 text-sm text-red-600 dark:text-red-500"
+            >
+              <span class="font-medium">Oops! </span>{{ form.errors.number }}
+            </p>
+          </div>
+          <div class="mb-6">
+            <label
+              for="status"
+              class="
+                block
+                mb-2
+                text-sm
+                font-medium
+                text-gray-900
+              "
+              >Select initial status</label
+            >
+            <select
+              id="status"
+              v-model="form.status"
+              class="
+                bg-gray-50
+                border border-gray-300
+                text-gray-900 text-sm
+                rounded-lg
+                focus:ring-blue-500 focus:border-blue-500
+                block
+                w-full
+                p-2.5
+              "
+            >
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+            <p
+              v-if="form.errors.status"
+              class="mt-2 text-sm text-red-600 dark:text-red-500"
+            >
+              <span class="font-medium">Oops! </span>{{ form.errors.status }}
+            </p>
           </div>
           <button
             type="submit"
@@ -76,7 +95,7 @@
               text-center
             "
           >
-            Create
+            Add number
           </button>
         </form>
       </div>
@@ -93,12 +112,14 @@ export default {
     BreezeAuthenticatedLayout,
     Head,
   },
-  setup() {
-      const form = useForm({
-      name: null,
-      document: null,
-    })
-    return {form}
-  }
+  props: ['customer'],
+  setup(props) {
+    const form = useForm({
+      number: null,
+      status: 'active',
+      customerId: props.customer.id
+    });
+    return { form };
+  },
 };
 </script>

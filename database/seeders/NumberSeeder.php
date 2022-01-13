@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Number;
 use Illuminate\Database\Seeder;
 
 class NumberSeeder extends Seeder
@@ -13,6 +14,8 @@ class NumberSeeder extends Seeder
      */
     public function run()
     {
-        //
+        Number::factory()
+        ->count(5)
+        ->create();
     }
 }

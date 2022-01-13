@@ -23,6 +23,9 @@ export default {
                 case 'cancelled':
                     statusClass = 'bg-red-100 text-red-800'
                     break;
+                case 'inactive':
+                    statusClass = 'bg-gray-100 text-gray-800'
+                    break;
             }
             return statusClass;
         }

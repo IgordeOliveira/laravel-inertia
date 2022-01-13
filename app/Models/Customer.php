@@ -23,4 +23,9 @@ class Customer extends Model
         'name',
 
     ];
+
+    function numbers() {
+        return $this->hasMany(Number::class);
+    }
+
 }
